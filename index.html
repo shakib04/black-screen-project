@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Black Screen</title>
+
+    <style>
+        .black-screen {
+            background-color: rgba(0, 0, 0, 0.712);
+            width: 100%;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="black-screen"></div>
+
+    <script src="./stack.js"></script>
+
+    <script>
+
+        // setInterval(() => {
+        //     // press right arrow key
+        //     const eventRight = new KeyboardEvent('keydown', {
+        //         keyCode: 39
+        //     });
+        //     document.dispatchEvent(eventRight);
+        // }, 2500);
+
+        // use stack data structure to store colors
+        let colors = new Stack();
+        console.error(colors);
+
+        // add event listener for key F
+        document.addEventListener('keydown', function (e) {
+            if (e.keyCode == 70) {
+                // write code open full screen
+                document.documentElement.requestFullscreen();
+            }
+        });
+        // add event listener for right arrow key
+        document.addEventListener('keydown', function (e) {
+            if (e.keyCode == 39) {
+                // change color to random lite color
+                randomLiteColor()
+                const generatedColor = localStorage.getItem('generatedColor');
+                document.querySelector('.black-screen').style.backgroundColor = generatedColor;
+                colors.push(generatedColor);
+            }
+        });
+
+        // add event listener for left arrow key
+        document.addEventListener('keydown', function (e) {
+            if (e.keyCode == 37) {
+                // change color to previous colors
+                if (colors.isEmpty()) {
+                    document.querySelector('.black-screen').style.backgroundColor = `rgba(0, 0, 0, 0.712)`;
+                    return;
+                } else {
+                    colors.pop();
+                    let peekedColor = colors.peek();
+                    if (peekedColor == null) {
+                        peekedColor = `rgba(0, 0, 0, 0.712)`;
+                    }
+                    document.querySelector('.black-screen').style.backgroundColor = peekedColor;
+                }
+            }
+        });
+
+
+        let count = 0;
+
+        // generate random lite color
+        function randomLiteColor() {
+            let r = Math.floor(Math.random() * 255);
+            let g = Math.floor(Math.random() * 255);
+            let b = Math.floor(Math.random() * 255);
+            let color = `rgb(${r}, ${g}, ${b})`;
+            if (isLiteColor(color)) {
+                if (count > 0) {
+                    console.error(`count: ${count}`);
+                    count = 0;
+                }
+                localStorage.setItem('generatedColor', color);
+                return;
+            } else {
+                count++;
+                randomLiteColor();
+            }
+        }
+
+        // check color is actually lite
+        function isLiteColor(color) {
+            let rgb = color.replace('rgb(', '').replace(')', '').split(',');
+            let r = rgb[0];
+            let g = rgb[1];
+            let b = rgb[2];
+            let brightness = Math.round(((parseInt(r) * 299) + (parseInt(g) * 587) + (parseInt(b) * 114)) / 1000);
+            return brightness > 155;
+        }
+
+    </script>
+</body>
+
+</html>

@@ -1,32 +1,34 @@
 // implement stack in javascript
-function Stack() {
-    this.data = [];
+class Stack {
+    constructor() {
+        this.data = [];
+    }
+    push(item) {
+        this.data.push(item);
+    }
+    pop() {
+        return this.data.pop();
+    }
+    peek() {
+        return this.data[this.data.length - 1];
+    }
+    isEmpty() {
+        return this.data.length === 0;
+    }
+    size() {
+        return this.data.length;
+    }
+    clear() {
+        this.data = [];
+    }
+    print() {
+        console.log(this.data.toString());
+    }
 }
 
-Stack.prototype.push = function(item) {
-    this.data.push(item);
-}
 
-Stack.prototype.pop = function() {
-    return this.data.pop();
-}
 
-Stack.prototype.peek = function() {
-    return this.data[this.data.length - 1];
-}
 
-Stack.prototype.isEmpty = function() {
-    return this.data.length === 0;
-}
 
-Stack.prototype.size = function() {
-    return this.data.length;
-}
 
-Stack.prototype.clear = function() {
-    this.data = [];
-}
 
-Stack.prototype.print = function() {
-    console.log(this.data.toString());
-}
